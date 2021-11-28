@@ -27,7 +27,7 @@ const firebaseConfig = {
     var sesion=document.getElementById("Sesion");
     sesion.onclick=function(){
         if(correo.value==""||contraseña.value==""){
-            alert("Llene todos los campos");
+            vacio();
         }else{
             if(Existe(correo.value,contraseña.value)==1){
                 localStorage.setItem("Sesion","Activo");
@@ -40,7 +40,7 @@ const firebaseConfig = {
                 }
                 
             }else{
-                alert("Datos incorrectos");
+                incorrectos();
             }
         }
 
@@ -72,3 +72,23 @@ const firebaseConfig = {
         }
         return encontrado;
     }
+    function vacio(){
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Llene todos los campos',
+            
+          });
+    }
+    function incorrectos(){
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Datos incorrectos',
+            
+          });
+    }
+    
+
+
+    

@@ -45,41 +45,41 @@ Registrar.onclick=function(){
     var Aceptar=0; 
     emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
     if(nombre.value==""||correo.value==""||contraseña.value==""||Repetir.value==""){
-        alert("Llene todos los campos vacíos");
+        vacio();
         Aceptar=1;
     }
         if(/^[A-Za-z\s]+$/.test(nombre.value)){
             errores[5].style.display="none";
-        }else{if(nombre.value!=""){errores[5].style.display="block";}
+        }else{if(nombre.value!=""){errores[5].style.display="block"; Ninvalido();}
         Aceptar=1;}
         if(nombre.value.length<6){
-            if(nombre.value!=""){errores[6].style.display="block";}
+            if(nombre.value!=""){errores[6].style.display="block";Ncorto();}
             Aceptar=1;
         }else{errores[6].style.display="none";}
         if(nombre.value.length>40){
-            errores[7].style.display="block";
+            errores[7].style.display="block"; Nlargo();
             Aceptar=1;
         }else{errores[7].style.display="none";}
         errores[0].style.display="none";
         if(contraseña.value.length<8 ){
             if(contraseña.value!=""){
-                errores[1].style.display="block";
+                errores[1].style.display="block" ;Ccorta();
             }
             Aceptar=1;
             }else{errores[1].style.display="none";}
         if(contraseña.value.length>20 ){
-            errores[4].style.display="block";
+            errores[4].style.display="block" ;Clarga();
             Aceptar=1;
             }else{errores[4].style.display="none";}
         if(contraseña.value!=Repetir.value){
                 if(contraseña.value!="" && Repetir.value!=""){
-                    errores[2].style.display="block";
+                    errores[2].style.display="block"; Distintas();
                 }
                 Aceptar=1;
             }else{errores[2].style.display="none";}
         if(!emailRegex.test(correo.value)){
                 if(correo.value!=""){
-                    errores[3].style.display="block";
+                    errores[3].style.display="block"; Einvalido();
                 }
                 Aceptar=1;
             }else{errores[3].style.display="none";}
@@ -97,10 +97,10 @@ Registrar.onclick=function(){
             localStorage.setItem("Nombre",Nombre)
             localStorage.setItem("Rol","Estudiante")
             //location.href="../public/index.html";
-            alert("Registrado correctamente");
+            Correcto();
             setTimeout(()=>{location.href="../index.html";},2000);   
         }else{
-            alert("Ya existe otra cuenta registrada con ese correo electrónico");
+            YaExiste();
         }
 
     }//else{alert("Aprende a rellenar un formulario");}
@@ -116,6 +116,88 @@ Registrar.onclick=function(){
      }
      return encontrado;
  }
+ function vacio(){
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Llene todos los campos',
+        
+      });
+}
+function Ccorta(){
+    Swal.fire({
+        icon: 'error',
+         title: 'Error',
+         text: 'Contraseña muy corta',
+            
+     });
+    
+}
+function Distintas(){
+    Swal.fire({
+        icon: 'error',
+         title: 'Error',
+         text: 'Las contraseñas son distintas',
+            
+     });
+}
+function Einvalido(){
+    Swal.fire({
+        icon: 'error',
+         title: 'Error',
+         text: 'El email no es valido',
+            
+     });
+}
+function Clarga(){
+    Swal.fire({
+        icon: 'error',
+         title: 'Error',
+         text: 'Contraseña muy larga',
+            
+     });
+}
+function Ninvalido(){
+    Swal.fire({
+        icon: 'error',
+         title: 'Error',
+         text: 'Nombre no valido',
+            
+     });
+}
+function Ncorto(){
+    Swal.fire({
+        icon: 'error',
+         title: 'Error',
+         text: 'Nombre muy corto',
+            
+     });
+}
+function Nlargo(){
+    Swal.fire({
+        icon: 'error',
+         title: 'Error',
+         text: 'Nombre muy largo',
+            
+     });
+}
+function YaExiste(){
+    Swal.fire({
+        icon: 'error',
+         title: 'Error',
+         text: 'Ya existe otra cuenta registrada con ese correo electrónico',
+            
+     });
+}
+function Correcto(){
+    
+    Swal.fire({
+        icon: 'success',
+         title: 'Registro exitoso',
+        
+            
+     });
+}
 
     
     

@@ -45,7 +45,7 @@ const firebaseConfig = {
   const MJSOK =()=>{
     Swal.fire(
       'Buen trabajo!',
-      'Datos guardados correctamente!',
+      'Administrador registrado correctamente',
       'success'
     )
   }
@@ -89,34 +89,34 @@ let regexNombre=/^[A-Za-z\s]+$/
     var mensaje= ""  
     if(name.value.length<1 && email.value.length<1 && pasword.value.length<1 && pasword2.value.length<1){
       parrafo.innerHTML="Ingrese todos los espacios vacíos"
-      window.alert("Ingrese todos los espacios vacíos");
+      vacio();
       entrar=true;
       res=true;
     }
     if(name.value.length<1 || email.value.length<1 || pasword.value.length<1 || pasword2.value.length<1){
       if(entrar==false){
       mensaje=mensaje+"*Ingrese todos los espacios vacíos <br>"
-      window.alert("Ingrese todos los espacios vacíos");
+      vacio();
       res=true;
       }
     }
     if(!regexNombre.test(name.value) && entrar==false ){
       if(name.value!=""){
       mensaje=mensaje+"*No ingrese Caracteres especiales o números en Nombre <br>"
-      window.alert("No ingrese Caracteres especiales o numéricos en Nombre");
+      Ninvalido();
       }
       res=true;
     }
     if(name.value.length>40 && entrar==false){
       mensaje=mensaje+"*Nombre muy largo <br> "
-      window.alert("Nombre muy largo");
+      Nlargo();
       res=true;
   
     }
     if(name.value.length <6 && entrar==false){
       if(name.value!=""){
         mensaje=mensaje+"*Nombre muy corto <br> "      
-        window.alert("Nombre muy corto");
+        Ncorto();
       }
         res=true;
     }
@@ -124,7 +124,7 @@ let regexNombre=/^[A-Za-z\s]+$/
     if(!regexEmail.test(email.value) && entrar==false){
       if(email.value!=""){
         mensaje=mensaje+"*El email no es valido<br> "    
-        window.alert("El email no es valido");
+        Einvalido();
       }
         res=true;
     }
@@ -132,33 +132,33 @@ let regexNombre=/^[A-Za-z\s]+$/
     if(pasword.value.length < 8  && entrar==false){
       if(pasword.value!=""){
         mensaje=mensaje+"*La contraseña es muy corta <br> " 
-        window.alert("La contraseña es muy corta");
+        Ccorta();
       }
         res=true;
     }
     if(pasword.value.length>20 && entrar==false){
       mensaje=mensaje+"*La contraseña es muy larga <br> "
-      window.alert("La contraseña es muy larga");
+      Clarga();
       res=true;
   }
   
     if(pasword2.value.length < 8 && pasword2.value.length<20 && entrar==false){
       if(pasword2.value!=""){
         mensaje=mensaje+"*La Confirmación de la contraseña es muy corta <br> "
-        window.alert("La Confirmación de la contraseña es muy corta");
+        Cocorta();
       }
         res=true;
     }
     if(pasword2.value.length>20 && entrar==false){
       mensaje=mensaje+"*La Confirmación de la contraseña es muy larga <br> "
-      window.alert("La Confirmación de la contraseña es muy larga");
+      Colarga();
       res=true;
   }
   
     if(pasword2.value != pasword.value && entrar==false){
       if(pasword.value!="" && pasword2.value!=""){
         mensaje=mensaje+"*Las contraseñas no son iguales <br> "
-        window.alert("Las contraseñas no son iguales");
+        Distintas();
       }
         res=true;
     }
@@ -169,7 +169,7 @@ let regexNombre=/^[A-Za-z\s]+$/
     //Aqui comprueba si existe un usuario con ese correo
     if(Existe(email.value)==0){
       parrafo.innerHTML = ""
-      window.alert("Registrado Correctamente");
+      
       res=true;
       name.value=""
       email.value=""
@@ -177,7 +177,7 @@ let regexNombre=/^[A-Za-z\s]+$/
       pasword2.value=""
       SaveAdmin(Usuario);
       }else{
-        alert("Ya existe ese usuario");
+        YaExiste();
         parrafo.innerHTML = "El usuario ya existe"
       }
     }
@@ -192,4 +192,94 @@ let regexNombre=/^[A-Za-z\s]+$/
        }
     }
     return encontrado;
+}
+function vacio(){
+  Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Llene todos los campos',
+      
+    });
+}
+function Ninvalido(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'No ingrese Caracteres especiales o numéricos en Nombre',
+          
+   });
+}
+function Ncorto(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'Nombre muy corto',
+          
+   });
+}
+function Nlargo(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'Nombre muy largo',
+          
+   });
+}
+function Einvalido(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'El email no es valido',
+          
+   });
+}
+function Ccorta(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'Contraseña muy corta',
+          
+   });
+  
+}
+function Clarga(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'Contraseña muy larga',
+          
+   });
+}
+function Distintas(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'Las contraseñas son distintas',
+          
+   });
+}
+function Cocorta(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'La Confirmación de la contraseña es muy corta',
+          
+   });
+  
+}
+function Colarga(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'La Confirmación de la contraseña es muy larga',
+          
+   });
+}
+function YaExiste(){
+  Swal.fire({
+      icon: 'error',
+       title: 'Error',
+       text: 'Ya existe otra cuenta registrada con ese correo electrónico',
+          
+   });
 }

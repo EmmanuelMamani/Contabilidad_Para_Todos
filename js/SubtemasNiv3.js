@@ -322,7 +322,7 @@ function AceptarEI(contenedor) {
         var file = contenedor.childNodes[0].files[0];
         if (!file) {
             
-            alert("No se seleccionó ninguna imagen");
+            vacio("No se seleccionó ninguna imagen");
         } else {
             console.log(file);
             var formato=(file.type).split("/");
@@ -349,7 +349,7 @@ function AceptarEI(contenedor) {
     
                 });
              }else{
-                 alert("Formato de imagen no aceptado");
+                 vacio("Formato de imagen no aceptado");
              }
             
         }
@@ -505,7 +505,7 @@ function AceptarE(contenedor) {
             setTimeout(() => { window.location.reload(); }, 2000);
            
         } else {
-            alert("No se puede actualizar, solo contiene espacios en blanco");
+            vacio("No se puede actualizar, solo contiene espacios en blanco");
         }
     }
 }
@@ -523,7 +523,11 @@ function CancelarE(contenedor) {
             if (i == 0) {
                 (contenedor.parentNode).childNodes[i].style.display = 'block';
             } else {
-                (contenedor.parentNode).childNodes[i].style.display = 'inline';
+                if(i==1){
+                    (contenedor.parentNode).childNodes[i].style.display = 'none';
+                }else{
+                    (contenedor.parentNode).childNodes[i].style.display = 'inline';
+                }
             }
 
         }
@@ -649,8 +653,10 @@ function aceptarI(contenedor) {
         var file = contenedor.childNodes[0].files[0];
         
         if (!file) {
-            alert("No se seleccionó ninguna imagen");
+            vacio("No se seleccionó ninguna imagen");
         } else {
+            var formato=(file.type).split("/");
+            if(formato[1]=="jpg" ||formato[1]=="png" || formato[1]=="gif" || formato[1]=="jpeg"){
             var storageRef = storage.ref('/Nivel2/' + file.name + Math.random());
             var uploadTask = storageRef.put(file);
             var urlImg;
@@ -666,6 +672,9 @@ function aceptarI(contenedor) {
                 });
 
             });
+        }else{
+           vacio("Formato de imagen no aceptado");
+        }
         }
     }
 
@@ -709,19 +718,28 @@ function Borrar(subtema) {
     borrar.className="BotonBorrar";
     subtema.appendChild(borrar);
     borrar.onclick = function () {
-        var confirmacion=confirm("¿Estas seguro de borrar este contenido?\nUna vez borrado no podrá recuperar el contenido");
-        if(confirmacion){
-            if (subtema.className == "Subtitulo") {
-                var contSubtema = subtema.parentNode.childNodes;
-                for (var i = 0; i < contSubtema.length; i++) {
-                    db.collection("Subtemas3").doc(contSubtema[i].id).delete();
+        Swal.fire({
+            title: '¿Seguro que quiere eliminar?',
+            text: "No podrá recuperar el contenido",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si,quiero eliminarlo',
+            cancelButtonText: 'Cancelar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                if (subtema.className == "Subtitulo") {
+                    var contSubtema = subtema.parentNode.childNodes;
+                    for (var i = 0; i < contSubtema.length; i++) {
+                        db.collection("Subtemas3").doc(contSubtema[i].id).delete();
+                    }
+                } else {
+                    db.collection("Subtemas3").doc(subtema.id).delete();
                 }
-            } else {
-                db.collection("Subtemas3").doc(subtema.id).delete();
+                setTimeout(() => { window.location.reload(); }, 2000);
             }
-            setTimeout(() => { window.location.reload(); }, 2000);
-        }
-        
+          })
     }
 }
 /*-------------------------------Boton Cancelar---------------------------*/
@@ -738,6 +756,7 @@ function cancelar(subtema) {
 }
 /*-------------------------------Boton Aceptar----------------------------*/
 function aceptar(subtema) {
+    
     var aceptar = document.createElement("icon");
     // aceptar.innerHTML = "Aceptar";
     aceptar.className="BotonAceptar";
@@ -745,7 +764,9 @@ function aceptar(subtema) {
     aceptar.onclick = function () {
         console.log(y);
 
-
+        console.log("----------------------");
+        console.log(subtema);
+        console.log("----------------------");
         if (subtema.id == "Subtitulo") {
             var x = subtema.firstChild.value;
             if (/\w/.test(x)) {
@@ -760,7 +781,7 @@ function aceptar(subtema) {
 
                 setTimeout(() => { window.location.reload(); }, 2000);//Necesario para que la base guarde los cambios
             } else {
-                alert("No puede dejar este espacion en blanco");
+                vacio("No puede dejar este espacion en blanco");
             }
             //console.log(subtema.parentNode.parentNode.parentNode);
         }
@@ -772,7 +793,9 @@ function aceptar(subtema) {
                 let Tipo = "Parrafo";
 
                 var texto = subtema.firstChild.value;
+                
                 if (texto != "") {
+                   
                     var separado = texto.split('\n');
                     var parrafoaux = "";
                     for (var i = 0; i < separado.length; i++) {
@@ -787,19 +810,23 @@ function aceptar(subtema) {
                         }
 
                     }
-                }
+                
                 if(parrafoaux!=""){
                     let Contenido = parrafoaux;
                     console.log(subtema.parentNode.parentNode);
                     let Tema = subtema.parentNode.parentNode.parentNode.id;
                     const Subtema = { ID, Tipo, Contenido, Tema }
+                   
     
-                    GuardarSubtema(Subtema);
+                   GuardarSubtema(Subtema);
                     subtema.parentNode.removeChild(subtema);
-                    setTimeout(() => { window.location.reload(); }, 2000);//Necesario para que la base guarde los cambios
+                   setTimeout(() => { window.location.reload(); }, 2000);//Necesario para que la base guarde los cambios
                 }else{
-                    alert("No puede dejar este espacion en blanco");
+                    vacio("No puede dejar este espacion en blanco");
                 }
+            }else{
+                vacio("No puede dejar este espacion en blanco");
+            }
                
             }
             if (subtema.id == "Lista") {
@@ -830,7 +857,7 @@ function aceptar(subtema) {
                             listaAux = listaAux + control[i];
                         }
                     }
-                }
+                
                 if(listaAux!=""){
                     let Contenido = listaAux;
                 let Tema = subtema.parentNode.parentNode.parentNode.id;
@@ -839,14 +866,16 @@ function aceptar(subtema) {
                 // console.log("++++++++++++++++");
                 const Subtema = { ID, Tipo, Contenido, Tema }
 
-                GuardarSubtema(Subtema);
+               GuardarSubtema(Subtema);
                 subtema.parentNode.removeChild(subtema);
                 setTimeout(() => { window.location.reload(); }, 2000);//Necesario para que la base guarde los cambios
                 }else{
-                    alert("No puede dejar este espacion en blanco");
+                    vacio("No puede dejar este espacion en blanco");
                 }
-                
+            }else{
+                vacio("No puede dejar este espacion en blanco");
             }
+        }
 
 
      }
@@ -923,7 +952,14 @@ function crearSubtema() {
     // divST.insertAdjacentElement('afterend',auxiliar);
     aceptar(auxiliar);
 }*/
-
+function vacio(texto){
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: texto,
+        
+      });
+}
 
 
 
